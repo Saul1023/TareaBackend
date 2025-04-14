@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PersonaEntity } from './api/c_persona/entities/c_persona.entity';
 import { VehiculoModule } from './api/vehiculo/vehiculo.module';
 import { ClienteModule } from './api/cliente/cliente.module';
+import { VehiculoEntity } from './api/vehiculo/entities/vehiculo.entity';
 
 @Module({
   imports: [CPersonaModule,
@@ -18,7 +19,7 @@ import { ClienteModule } from './api/cliente/cliente.module';
       /*username: 'root',
       password: 'root',*/
       database: 'backend',
-      entities: [PersonaEntity],
+      entities: [PersonaEntity,VehiculoEntity],
       synchronize: true, //cuando este en produccion debe estar false.
     }),
     CPersonaModule,

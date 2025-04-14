@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar Persona</title>
+  <title>Registrar Vehículo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
       display: block;
     }
 
-    input[type="text"], input[type="email"], input[type="number"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -88,19 +88,22 @@
 </head>
 <body>
   <div class="container">
-    <h1>Registrar Persona</h1>
-    <form id="personaForm">
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required><br>
+    <h1>Registrar Vehículo</h1>
+    <form id="vehiculoForm">
+      <label for="marca">Marca:</label>
+      <input type="text" id="marca" name="marca" required><br>
       
-      <label for="apellido">Apellido:</label>
-      <input type="text" id="apellido" name="apellido" required><br>
+      <label for="modelo">Modelo:</label>
+      <input type="text" id="modelo" name="modelo" required><br>
       
-      <label for="edad">Edad:</label>
-      <input type="text" id="edad" name="edad" required min="0" step="1"><br>
+      <label for="anio">Año:</label>
+      <input type="text" id="anio" name="anio" required min="1900" max="2100"><br>
       
-      <label for="correo">Correo:</label>
-      <input type="email" id="correo" name="correo" required><br>
+      <label for="color">Color:</label>
+      <input type="text" id="color" name="color"><br>
+      
+      <label for="placa">Placa:</label>
+      <input type="text" id="placa" name="placa"><br>
       
       <button type="submit">Registrar</button>
     </form>
@@ -110,18 +113,19 @@
   <div id="notification" class="notification"></div>
 
   <script>
-    document.getElementById('personaForm').addEventListener('submit', async function(event) {
+    document.getElementById('vehiculoForm').addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const data = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        edad: parseInt(document.getElementById('edad').value),
-        correo: document.getElementById('correo').value
+        marca: document.getElementById('marca').value,
+        modelo: document.getElementById('modelo').value,
+        anio: parseInt(document.getElementById('anio').value),
+        color: document.getElementById('color').value,
+        placa: document.getElementById('placa').value
       };
 
       try {
-        const response = await fetch('http://localhost:3000/persona', {
+        const response = await fetch('http://localhost:3000/vehiculo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -134,11 +138,11 @@
         const notification = document.getElementById('notification');
         
         if (response.ok) {
-          notification.innerText = 'Usuario registrado correctamente';
+          notification.innerText = 'Vehículo registrado correctamente';
           notification.classList.remove('error');
           notification.classList.add('success');
         } else {
-          notification.innerText = 'No se pudo crear el usuario: ' + result.message;
+          notification.innerText = 'No se pudo registrar el vehículo: ' + result.message;
           notification.classList.remove('success');
           notification.classList.add('error');
         }

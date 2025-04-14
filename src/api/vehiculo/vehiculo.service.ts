@@ -9,24 +9,25 @@ import { Repository } from 'typeorm';
 export class VehiculoService {
   constructor(
     @InjectRepository(VehiculoEntity)
-    private personaRepository:Repository<VehiculoEntity>
-){}
-public list(){
-  return this.personaRepository.find();
+    private vehiculoRepository:Repository<VehiculoEntity>
+  ){}
+  public list(){
+  return this.vehiculoRepository.find();
   }
   
-  public async add(al){
-  return await this.personaRepository.save(al);
+  public async add(vehiculo: CreateVehiculoDto): Promise<VehiculoEntity> {
+    return await this.vehiculoRepository.save(vehiculo);
   }
+  
   
   public async edit(id,al){
   /*let categoria = this.categoriaRepository.findBy(id);
   if(categoria)*/
-  return await this.personaRepository.update(id,al);
+  return await this.vehiculoRepository.update(id,al);
   }
   
   
   public async delete(id){
-   return await this.personaRepository.delete(id);
+   return await this.vehiculoRepository.delete(id);
   }
 }

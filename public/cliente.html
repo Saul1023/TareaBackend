@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar Persona</title>
+  <title>Registrar Cliente</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
       display: block;
     }
 
-    input[type="text"], input[type="email"], input[type="number"] {
+    input, textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -61,7 +61,6 @@
       background-color: #45a049;
     }
 
-    /* Estilo de la notificación */
     .notification {
       position: fixed;
       bottom: 20px;
@@ -72,7 +71,7 @@
       color: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: none;  /* Ocultar por defecto */
+      display: none;
       font-size: 1.1em;
       text-align: center;
     }
@@ -88,40 +87,47 @@
 </head>
 <body>
   <div class="container">
-    <h1>Registrar Persona</h1>
-    <form id="personaForm">
+    <h1>Registrar Cliente</h1>
+    <form id="clienteForm">
       <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required><br>
-      
+      <input type="text" id="nombre" name="nombre" required>
+
       <label for="apellido">Apellido:</label>
-      <input type="text" id="apellido" name="apellido" required><br>
-      
+      <input type="text" id="apellido" name="apellido" required>
+
       <label for="edad">Edad:</label>
-      <input type="text" id="edad" name="edad" required min="0" step="1"><br>
-      
+      <input type="text" id="edad" name="edad" required min="0">
+
       <label for="correo">Correo:</label>
-      <input type="email" id="correo" name="correo" required><br>
-      
+      <input type="email" id="correo" name="correo" required>
+
+      <label for="telefono">Teléfono:</label>
+      <input type="text" id="telefono" name="telefono">
+
+      <label for="direccion">Dirección:</label>
+      <textarea id="direccion" name="direccion" rows="3"></textarea>
+
       <button type="submit">Registrar</button>
     </form>
   </div>
 
-  <!-- Notificación -->
   <div id="notification" class="notification"></div>
 
   <script>
-    document.getElementById('personaForm').addEventListener('submit', async function(event) {
+    document.getElementById('clienteForm').addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const data = {
         nombre: document.getElementById('nombre').value,
         apellido: document.getElementById('apellido').value,
         edad: parseInt(document.getElementById('edad').value),
-        correo: document.getElementById('correo').value
+        correo: document.getElementById('correo').value,
+        telefono: document.getElementById('telefono').value || null,
+        direccion: document.getElementById('direccion').value || null
       };
 
       try {
-        const response = await fetch('http://localhost:3000/persona', {
+        const response = await fetch('http://localhost:3000/cliente', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -130,22 +136,19 @@
         });
 
         const result = await response.json();
-
         const notification = document.getElementById('notification');
-        
+
         if (response.ok) {
-          notification.innerText = 'Usuario registrado correctamente';
+          notification.innerText = 'Cliente registrado correctamente';
           notification.classList.remove('error');
           notification.classList.add('success');
         } else {
-          notification.innerText = 'No se pudo crear el usuario: ' + result.message;
+          notification.innerText = 'No se pudo registrar el cliente: ' + (result.message || 'Error desconocido');
           notification.classList.remove('success');
           notification.classList.add('error');
         }
         notification.style.display = 'block';
-        setTimeout(function() {
-          notification.style.display = 'none';
-        }, 5000);
+        setTimeout(() => notification.style.display = 'none', 5000);
 
       } catch (error) {
         const notification = document.getElementById('notification');
@@ -153,10 +156,7 @@
         notification.classList.remove('success');
         notification.classList.add('error');
         notification.style.display = 'block';
-
-        setTimeout(function() {
-          notification.style.display = 'none';
-        }, 5000);
+        setTimeout(() => notification.style.display = 'none', 5000);
       }
     });
   </script>
